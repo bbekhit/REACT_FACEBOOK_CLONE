@@ -15,6 +15,7 @@ client/build
 # misc
 .DS_Store
 .env
+client/.env
 .env.local
 .env.development.local
 .env.test.local
@@ -23,3 +24,5 @@ client/build
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+client/.eslintrc
