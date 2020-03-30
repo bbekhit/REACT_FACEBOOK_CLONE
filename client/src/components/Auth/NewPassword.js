@@ -108,6 +108,7 @@ const NewPassword = ({
       justify="center"
       direction="column"
       spacing={2}
+      style={{ margin: "5rem auto" }}
     >
       <Grid item>
         <Typography variant="subtitle1" color="primary">

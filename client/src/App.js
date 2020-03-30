@@ -13,10 +13,20 @@ import AccountActivate from "./components/Auth/AcountActivate";
 import AlertComponent from "./components/Alert/AlertComponent";
 import ResetPassword from "./components/Auth/ResetPassword";
 import NewPassword from "./components/Auth/NewPassword";
+import AddPost from "./components/Post/AddPost";
+import PostList from "./components/Post/PostList";
+import ModalManager from "./components/Modal/ModalManager";
+import EditPost from "./components/Post/EditPost";
+import Profile from "./components/Profile/Profile";
+import AddProfile from "./components/Profile/AddProfile";
+import Profiles from "./components/Profile/Profiles";
+import ToFollow from "./components/Profile/ToFollow";
+import Comments from "./components/Post/Comments";
 
 const Main = withRouter(({ location }) => {
   const [value, setValue] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(0);
+
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
@@ -31,6 +41,7 @@ const Main = withRouter(({ location }) => {
               />
             )}
           <AlertComponent />
+          <ModalManager />
           <Switch>
             <Route exact path="/" component={Landing} />
             <Route exact path="/login" component={Login} />
@@ -41,16 +52,20 @@ const Main = withRouter(({ location }) => {
               path="/auth/password/reset/:token"
               component={NewPassword}
             />
-            {/* <Route
-              exact
-              path="/auth/password/reset/:token"
-              component={() => <>Hello</>}
-            /> */}
             <Route
               path="/auth/account/activate/:token"
               exact
               component={AccountActivate}
             />
+            <Route exact path="/create-post" component={AddPost} />
+            <Route exact path="/edit/:id" component={EditPost} />
+            <Route exact path="/posts" component={PostList} />
+            <Route exact path="/me" component={Profile} />
+            <Route exact path="/create-profile" component={AddProfile} />
+            <Route exact path="/profiles" component={Profiles} />
+            <Route exact path="/toFollow" component={ToFollow} />
+            <Route exact path="/toFollow" component={ToFollow} />
+            <Route exact path="/post/:id" component={Comments} />
           </Switch>
         </div>
       </Provider>

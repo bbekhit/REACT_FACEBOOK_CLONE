@@ -16,7 +16,7 @@ const AlertComponent = props => {
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         key={props.alert.id}
         open={open}
-        autoHideDuration={6000}
+        // autoHideDuration={6000}
         onClose={handleClose}
         TransitionComponent={Slide}
         message={props.alert.alertMessage}

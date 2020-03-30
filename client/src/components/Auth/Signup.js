@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
   },
   btn: {
     ...theme.typography.submitBtn,
-    alignSelf: "flex-end",
+    width: "100%",
     "&:hover": {
       background: theme.palette.common.whiteColor,
       color: theme.palette.common.mainBlue,
@@ -252,12 +252,7 @@ const Signup = ({ preSignup, isAuthenticated }) => {
                     onChange={onChange}
                   />
                 </Grid>
-                <Grid
-                  item
-                  style={{
-                    alignSelf: theme.floatRight
-                  }}
-                >
+                <Grid item>
                   <Button
                     size={matchesMD ? "small" : "large"}
                     className={classes.btn}

@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { signup } from "../../redux/actions/authActions";
 import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
 import jwt from "jsonwebtoken";
-import { Typography } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -29,18 +31,25 @@ function AccountActivate({
     signup({ name, email, password });
   }, [signup, token]);
   const classes = useStyles();
+  const theme = useTheme();
+  const matchesMD = useMediaQuery(theme.breakpoints.down("md"));
   return (
-    <div className={classes.container}>
-      <Typography variant="h2">
-        Thank you for confirming your account{" "}
-      </Typography>
-      <Typography variant="h2">
-        <Link className={classes.link} to="/login">
-          {" "}
-          Sign in
-        </Link>
-      </Typography>
-    </div>
+    <Grid container className={classes.container}>
+      <Grid item style={{ padding: "2rem" }}>
+        <Typography
+          variant="subtitle1"
+          style={{ fontSize: matchesMD ? "1.5rem" : "3rem" }}
+        >
+          Thank you for confirming your account{" "}
+          <span>
+            <Link to="/login" className={classes.link}>
+              {" "}
+              Sign in
+            </Link>
+          </span>
+        </Typography>
+      </Grid>
+    </Grid>
   );
 }
 

@@ -36,7 +36,10 @@ export default createMuiTheme({
       fontSize: "1rem",
       textTransform: "uppercase",
       color: "white",
-      background: mainPrimary
+      background: mainPrimary,
+      borderStyle: "solid",
+      borderWidth: "1px",
+      borderColor: "green"
     },
     h2: {
       fontFamily: "Raleway",
@@ -98,6 +101,16 @@ export default createMuiTheme({
         fontSize: "1rem"
       }
     }
+    // Name of the component ⚛️
+    // MuiCssBaseline: {
+    //   // Name of the rule
+    //   "@global": {
+    //     "*, *::before, *::after": {
+    //       transition: "none !important",
+    //       animation: "none !important"
+    //     }
+    //   }
+    // }
   },
   customFont: {
     fontSize: "62%"
@@ -116,5 +129,10 @@ export default createMuiTheme({
     display: "flex",
     justifyContent: "center",
     alignItems: "center"
+  },
+  customBorder: {
+    borderColor: mainPrimary,
+    borderStyle: "solid",
+    borderWidth: "1px"
   }
 });

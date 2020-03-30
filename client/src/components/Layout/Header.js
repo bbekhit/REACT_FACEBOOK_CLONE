@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { signout } from "../../redux/actions/authActions";
+import { setAlert } from "../../redux/actions/alertActions";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -106,7 +107,7 @@ const useStyles = makeStyles(theme => ({
   },
   drawerItem: {
     ...theme.typography.tab,
-    color: "white",
+    // color: "white",
     opacity: 0.7
   },
   drawerItemEstimate: {
@@ -130,8 +131,9 @@ const Header = props => {
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
 
   const routes = [
-    { name: "Home", link: "/", activeIndex: 0, auth: "all" },
-    { name: "Posts", link: "/posts", activeIndex: 1, auth: "all" }
+    { name: "Home", link: "/", activeIndex: 0 },
+    { name: "Posts", link: "/posts", activeIndex: 1 },
+    { name: "Profiles", link: "/profiles", activeIndex: 2 }
   ];
 
   const handleChange = (event, newValue) => {
@@ -158,13 +160,26 @@ const Header = props => {
     });
   }, [props.value, routes, props]);
 
-  const authTabs = (
+  const authTabs = [
+    // { label: "Post", to: "/create-post" },
+    { label: "Profile", to: "/me" },
+    { label: "Logout", to: "" }
+  ].map((item, i) => (
     <Tab
-      label="Logout"
+      key={item.label}
+      label={item.label}
+      component={Link}
+      to={item.to}
       className={classes.tab}
-      onClick={() => props.signout()}
+      onClick={() => {
+        if (item.label === "Logout") {
+          props.signout();
+        } else {
+          return;
+        }
+      }}
     />
-  );
+  ));
 
   const notAuthTabs = [
     { label: "Login", to: "/login" },
@@ -192,6 +207,12 @@ const Header = props => {
           className={classes.tab}
           component={Link}
           to="/posts"
+        />
+        <Tab
+          label="Profiles"
+          className={classes.tab}
+          component={Link}
+          to="/profiles"
         />
         {props.auth.isAuthenticated ? authTabs : notAuthTabs}
       </Tabs>
@@ -222,6 +243,9 @@ const Header = props => {
               onClick={() => {
                 setOpenDrawer(false);
                 props.setValue(route.activeIndex);
+                if (route.name === "Post" && !props.auth.isAuthenticated) {
+                  props.setAlert("Please Login to proceed", "error");
+                }
               }}
             >
               <ListItemText className={classes.drawerItem}>
@@ -230,45 +254,62 @@ const Header = props => {
             </ListItem>
           ))}
         </List>
-        {props.auth.isAuthenticated ? (
-          <ListItem
-            className={classes.drawerItem}
-            onClick={() => props.signout()}
-            button
-            divider
-            classes={{ selected: classes.drawerItemSelected }}
-          >
-            <ListItemText
-              className={classes.drawerItem}
-              style={{ color: "red" }}
-            >
-              Logout
-            </ListItemText>
-          </ListItem>
-        ) : (
-          [
-            { name: "Login", link: "/login", activeIndex: 2, auth: false },
-            { name: "Sign Up", link: "/signup", activeIndex: 3, auth: false }
-          ].map(route => (
-            <ListItem
-              divider
-              key={`${route}${route.activeIndex}`}
-              button
-              component={Link}
-              to={route.link}
-              selected={props.value === route.activeIndex}
-              classes={{ selected: classes.drawerItemSelected }}
-              onClick={() => {
-                setOpenDrawer(false);
-                props.setValue(route.activeIndex);
-              }}
-            >
-              <ListItemText className={classes.drawerItem}>
-                {route.name}
-              </ListItemText>
-            </ListItem>
-          ))
-        )}
+        {props.auth.isAuthenticated
+          ? [
+              // { name: "Post", link: "/create-post", activeIndex: 3 },
+              { name: "Profile", link: "/me", activeIndex: 4 },
+              { name: "Logout", link: "", activeIndex: 5 }
+            ].map((item, i) => (
+              <ListItem
+                key={item.name}
+                className={classes.drawerItem}
+                onClick={() => {
+                  if (item.name === "Logout") {
+                    props.signout();
+                  }
+                  setOpenDrawer(false);
+                  props.setValue(item.activeIndex);
+                }}
+                button
+                divider
+                classes={{ selected: classes.drawerItemSelected }}
+                selected={props.value === item.activeIndex}
+                component={Link}
+                to={item.link}
+              >
+                <ListItemText
+                  className={classes.drawerItem}
+                  style={{
+                    color: item.name === "Logout" ? "red" : "white",
+                    opacity: "7"
+                  }}
+                >
+                  {item.name}
+                </ListItemText>
+              </ListItem>
+            ))
+          : [
+              { name: "Login", link: "/login", activeIndex: 3, auth: false },
+              { name: "Sign Up", link: "/signup", activeIndex: 4, auth: false }
+            ].map(route => (
+              <ListItem
+                divider
+                key={`${route}${route.activeIndex}`}
+                button
+                component={Link}
+                to={route.link}
+                selected={props.value === route.activeIndex}
+                classes={{ selected: classes.drawerItemSelected }}
+                onClick={() => {
+                  setOpenDrawer(false);
+                  props.setValue(route.activeIndex);
+                }}
+              >
+                <ListItemText className={classes.drawerItem}>
+                  {route.name}
+                </ListItemText>
+              </ListItem>
+            ))}
       </SwipeableDrawer>
       <IconButton
         onClick={() => setOpenDrawer(!openDrawer)}
@@ -306,4 +347,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, { signout })(Header);
+export default connect(mapStateToProps, { signout, setAlert })(Header);

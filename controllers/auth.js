@@ -75,10 +75,11 @@ exports.signin = async (req, res) => {
     await user.comparePassword(password);
     // generate a token and send to client
     const token = jwt.sign(
-      { userId: user._id, name: user.name, email: user.email },
+      { userId: user._id },
+      // { userId: user._id, name: user.name, email: user.email, role: user.role },
       process.env.JWT_SECRET,
       {
-        expiresIn: 36
+        expiresIn: 3600
       }
     );
     res.cookie("token", token, { expiresIn: 3600 });
@@ -101,6 +102,7 @@ exports.signout = (req, res) => {
 exports.getCurrentUser = async (req, res) => {
   try {
     let user = await User.findById(req.user._id).select("-password");
+    // let user = await User.findById(req.user._id).select("-password");
     return res.status(200).json({
       status: "success",
       user
@@ -126,10 +128,12 @@ exports.googleLogin = (req, res) => {
           if (user) {
             // console.log(user);
             const token = jwt.sign(
-              { userId: user._id, name, email },
+              { userId: user._id },
+              // { userId: user._id, name, email, role: user.role },
               process.env.JWT_SECRET,
               {
-                expiresIn: "1d"
+                expiresIn: 3600
+                // expiresIn: "1d"
               }
             );
             // console.log(profileObj);
