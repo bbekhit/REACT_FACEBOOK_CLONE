@@ -28,9 +28,13 @@ exports.createPost = async (req, res) => {
 };
 
 exports.getPosts = async (req, res) => {
+  let limit = req.body.limit ? parseInt(req.body.limit) : 100;
+  let skip = parseInt(req.body.skip);
   try {
-    const posts = await Post.find();
-    res.status(200).json(posts);
+    const posts = await Post.find()
+      .limit(limit)
+      .skip(skip);
+    res.status(200).json({ posts, size: posts.length });
   } catch (error) {
     res.status(422).json({ error: "Can't fetch posts, try again later" });
   }

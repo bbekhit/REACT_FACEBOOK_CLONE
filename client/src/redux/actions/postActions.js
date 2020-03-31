@@ -38,15 +38,18 @@ export const createPost = data => async dispatch => {
   }
 };
 
-export const getPosts = () => async dispatch => {
+export const getPosts = (skip, limit, previousState = []) => async dispatch => {
+  const body = JSON.stringify({ skip, limit });
   try {
-    let res = await axios.get("/api/v1/post/posts", config);
+    let res = await axios.post("/api/v1/post/posts", body, config);
+    let newState = [...previousState, ...res.data.posts];
     dispatch({
       type: GET_POSTS,
-      payload: res.data
+      payload: newState
     });
+    return res.data.size;
   } catch (err) {
-    dispatch(setAlert(err.response.data.error, "error", "4"));
+    // dispatch(setAlert(err.response.data.error, "error", "4"));
   }
 };
 

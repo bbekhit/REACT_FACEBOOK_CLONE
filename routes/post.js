@@ -15,7 +15,7 @@ const auth = require("../middleware/auth");
 const isOwner = require("../middleware/isOwner");
 
 router.post("/create", auth, createPost);
-router.get("/posts", getPosts);
+router.post("/posts", getPosts);
 router.delete("/:postId", auth, isOwner, deletePost);
 router.put("/:postId", auth, isOwner, editPost);
 router.put("/addComment/:postId", auth, addComment);

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { getPosts, addLike, removeLike } from "../../redux/actions/postActions";
 import { openModal } from "../../redux/actions/modalActions";
 import { connect } from "react-redux";
@@ -14,7 +14,6 @@ import Typography from "@material-ui/core/Typography";
 import Spinner from "../Spinner/Spinner";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
-// import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import Button from "@material-ui/core/Button";
 
@@ -66,11 +65,22 @@ const PostList = ({
   openModal,
   auth: { user }
 }) => {
+  const [limit, setLimit] = useState(2);
+  const [skip, setSkip] = useState(0);
+  const [size, setSize] = useState(Infinity);
   const classes = useStyles();
 
   useEffect(() => {
-    getPosts();
+    getPosts(skip, limit);
   }, [getPosts]);
+
+  const loadMore = async () => {
+    let newSkip = skip + limit;
+    let size = await getPosts(newSkip, limit, posts);
+    setSize(size);
+    setSkip(newSkip);
+  };
+
   return (
     <Grid container style={{ padding: "2rem" }} className={classes.wrapper}>
       <List className={classes.root}>
@@ -179,6 +189,13 @@ const PostList = ({
           <Spinner />
         )}
       </List>
+      <Grid container justify="flex-end">
+        {size > 0 && size >= limit ? (
+          <Button className={classes.followBtn} onClick={loadMore}>
+            Load More
+          </Button>
+        ) : null}
+      </Grid>
     </Grid>
   );
 };
