@@ -13,6 +13,7 @@ import IconButton from "@material-ui/core/IconButton";
 import login from "../../assets/login.svg";
 import Spinner from "../Spinner/Spinner";
 import GoogleLoginComponent from "./GoogleLoginComponent";
+import Recaptcha from "react-recaptcha";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -93,6 +94,7 @@ const Login = ({ isAuthenticated, history, signin }) => {
     emailError: "",
     passwordError: ""
   });
+  const [isVerified, setIsVerified] = useState(false);
   const [loading, setLoading] = useState(false);
   const { email, password } = values;
   const { emailError, passwordError } = errors;
@@ -151,6 +153,16 @@ const Login = ({ isAuthenticated, history, signin }) => {
     }
   };
 
+  const recaptchaLoaded = () => {
+    console.log("capcha successfully loaded");
+  };
+
+  const verifyCallback = response => {
+    if (response) {
+      setIsVerified(true);
+    }
+  };
+
   if (isAuthenticated) {
     return <Redirect to="/" />;
   }
@@ -184,7 +196,7 @@ const Login = ({ isAuthenticated, history, signin }) => {
                 spacing={4}
               >
                 <Grid item>
-                  <GoogleLoginComponent />
+                  <GoogleLoginComponent style={{ border: "1px solid red" }} />
                 </Grid>
                 <Grid item>
                   <CssTextField
@@ -230,17 +242,38 @@ const Login = ({ isAuthenticated, history, signin }) => {
                     value={password}
                   />
                 </Grid>
-                <Grid item>
-                  <Button
-                    size={matchesMD ? "small" : "large"}
-                    className={classes.btn}
-                    onClick={onSubmit}
-                    disabled={
-                      !!emailError || !email || !!passwordError || !password
-                    }
-                  >
-                    Submit
-                  </Button>
+                <Grid
+                  item
+                  container
+                  justify="space-between"
+                  // direction="column"
+                  spacing={1}
+                >
+                  <Grid item sm={6}>
+                    <Recaptcha
+                      sitekey="6Lfrt-UUAAAAACkyCzoKi_eauwv1XEYkYCUTAoE2"
+                      render="explicit"
+                      onloadCallback={recaptchaLoaded}
+                      verifyCallback={verifyCallback}
+                      size="compact"
+                    />
+                  </Grid>
+                  <Grid item sm={6}>
+                    <Button
+                      size={matchesMD ? "small" : "large"}
+                      className={classes.btn}
+                      onClick={onSubmit}
+                      disabled={
+                        !!emailError ||
+                        !email ||
+                        !!passwordError ||
+                        !password ||
+                        !isVerified
+                      }
+                    >
+                      Submit
+                    </Button>
+                  </Grid>
                 </Grid>
                 <Grid item>
                   <Typography variant="subtitle1">

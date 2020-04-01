@@ -67,10 +67,7 @@ exports.signin = async (req, res) => {
   try {
     let user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({
-        status: "fail",
-        error: "Invalid credentials"
-      });
+      return res.status(422).json({ error: "Invalid credentials" });
     }
     await user.comparePassword(password);
     // generate a token and send to client
