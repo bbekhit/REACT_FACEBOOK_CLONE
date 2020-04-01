@@ -70,51 +70,59 @@ const PostList = ({
   scrollable,
   auth: { user }
 }) => {
-  const [loadMore, setLoadMore] = useState(true);
-  const [hasMore, setHasMore] = useState(true);
   const [state, setState] = useState([]);
   const [limit, setLimit] = useState(5);
   const [skip, setSkip] = useState(0);
+  const [size, setSize] = useState(5);
+  const [fetching, setFetching] = useState(true);
   const classes = useStyles();
 
   useEffect(() => {
-    console.log(state);
-    getData(limit, skip, loadMore);
-    setLoadMore(false);
-  }, [loadMore]);
+    getData(limit, skip);
+    // console.log("before", state);
+  }, []);
 
   useEffect(() => {
-    window.addEventListener("scroll", debounce(handleScroll, 1000), false);
+    window.addEventListener("scroll", throttle(handleScroll, 1000), false);
     return () => {
       window.removeEventListener("scroll", handleScroll, false);
     };
   }, [state]);
 
   const handleScroll = () => {
-    if (!loadMore) {
+    let newSkip;
+    let stateData = [...state];
+
+    // if (!fetching) {
+    //   return;
+    // }
+    if (size < limit) {
       return;
     }
     if (
       window.innerHeight + document.documentElement.scrollTop ===
       document.documentElement.offsetHeight
     ) {
-      setLoadMore(true);
+      newSkip = limit + skip;
+      setSkip(newSkip);
+      getData(limit, newSkip, stateData);
     }
   };
-
-  const getData = (limit, skip, load) => {
-    let body = { limit, skip };
-    if (load && hasMore) {
-      axios.post("/api/v1/post/posts", body).then(res => {
-        let newSkip = limit + skip;
-        setSkip(newSkip);
-        console.log("new", newSkip);
-        setState([...state, ...res.data.posts]);
-        if (res.data.size < limit) {
-          setHasMore(false);
-        }
-      });
+  const getData = (limit, skip, initialData = []) => {
+    // if (!fetching) {
+    //   return;
+    // }
+    if (size < limit) {
+      return;
     }
+    let body = { limit, skip };
+    axios.post("/api/v1/post/posts", body).then(res => {
+      if (res.data.size >= limit) {
+        let currentData = [...initialData, ...res.data.posts];
+        setState(currentData);
+      }
+      console.log("end");
+    });
   };
 
   return (
@@ -230,7 +238,7 @@ const PostList = ({
           <Spinner />
         )}
       </List>
-      {hasMore ? "Loading..." : "Done Loading"}
+      {!fetching ? "no More posts" : null}
       {/* <Grid container justify="flex-end">
         {size > 0 && size >= limit ? (
           <Button className={classes.followBtn} onClick={loadMore}>

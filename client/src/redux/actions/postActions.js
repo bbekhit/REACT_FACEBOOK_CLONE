@@ -38,16 +38,26 @@ export const createPost = data => async dispatch => {
   }
 };
 
-export const getPosts = (skip, limit, previousState = []) => async dispatch => {
-  const body = JSON.stringify({ skip, limit });
+// export const getPosts = (skip, limit, previousState = []) => async dispatch => {
+//   const body = JSON.stringify({ skip, limit });
+//   try {
+//     let res = await axios.post("/api/v1/post/posts", body, config);
+//     let newState = [...previousState, ...res.data.posts];
+//     dispatch({
+//       type: GET_POSTS,
+//       payload: newState
+//     });
+//     return res.data.size;
+//   } catch (err) {
+//     // dispatch(setAlert(err.response.data.error, "error", "4"));
+//   }
+// };
+
+export const getPosts = () => async dispatch => {
+  const body = JSON.stringify();
   try {
     let res = await axios.post("/api/v1/post/posts", body, config);
-    let newState = [...previousState, ...res.data.posts];
-    dispatch({
-      type: GET_POSTS,
-      payload: newState
-    });
-    return res.data.size;
+    return { posts: res.data.posts, size: res.data.size };
   } catch (err) {
     // dispatch(setAlert(err.response.data.error, "error", "4"));
   }

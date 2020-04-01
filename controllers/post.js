@@ -28,8 +28,9 @@ exports.createPost = async (req, res) => {
 };
 
 exports.getPosts = async (req, res) => {
-  let limit = req.body.limit ? parseInt(req.body.limit) : 100;
-  let skip = parseInt(req.body.skip);
+  let limit = req.body.limit ? parseInt(req.body.limit) : 5;
+  let skip = parseInt(req.body.skip) || 0;
+  console.log(limit, skip);
   try {
     const posts = await Post.find()
       .limit(limit)
@@ -39,6 +40,18 @@ exports.getPosts = async (req, res) => {
     res.status(422).json({ error: "Can't fetch posts, try again later" });
   }
 };
+// exports.getPosts = async (req, res) => {
+//   let limit = req.body.limit ? parseInt(req.body.limit) : 100;
+//   let skip = parseInt(req.body.skip);
+//   try {
+//     const posts = await Post.find()
+//       .limit(limit)
+//       .skip(skip);
+//     res.status(200).json({ posts, size: posts.length });
+//   } catch (error) {
+//     res.status(422).json({ error: "Can't fetch posts, try again later" });
+//   }
+// };
 
 exports.deletePost = async (req, res) => {
   try {

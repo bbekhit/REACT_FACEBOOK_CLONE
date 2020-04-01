@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./app.css";
 import { BrowserRouter, Switch, Route, withRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { setCurrentUser } from "./redux/actions/authActions";
@@ -22,6 +23,7 @@ import AddProfile from "./components/Profile/AddProfile";
 import Profiles from "./components/Profile/Profiles";
 import ToFollow from "./components/Profile/ToFollow";
 import Comments from "./components/Post/Comments";
+import Infinite from "./components/Post/Infinite";
 
 const Main = withRouter(({ location }) => {
   const [value, setValue] = useState(0);
@@ -66,6 +68,7 @@ const Main = withRouter(({ location }) => {
             <Route exact path="/toFollow" component={ToFollow} />
             <Route exact path="/toFollow" component={ToFollow} />
             <Route exact path="/post/:id" component={Comments} />
+            <Route exact path="/infinite" component={Infinite} />
           </Switch>
         </div>
       </Provider>
