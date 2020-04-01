@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./app.css";
 import { BrowserRouter, Switch, Route, withRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { setCurrentUser } from "./redux/actions/authActions";
