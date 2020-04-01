@@ -196,7 +196,7 @@ const Login = ({ isAuthenticated, history, signin }) => {
                 spacing={4}
               >
                 <Grid item>
-                  <GoogleLoginComponent style={{ border: "1px solid red" }} />
+                  {/* <GoogleLoginComponent style={{ border: "1px solid red" }} /> */}
                 </Grid>
                 <Grid item>
                   <CssTextField
@@ -245,11 +245,11 @@ const Login = ({ isAuthenticated, history, signin }) => {
                 <Grid
                   item
                   container
-                  justify="space-between"
+                  justify="flex-end"
                   // direction="column"
                   spacing={1}
                 >
-                  <Grid item sm={6}>
+                  {/* <Grid item sm={6}>
                     <Recaptcha
                       sitekey={`${process.env.REACT_APP_CAPTCHA_SITE_KEY}`}
                       render="explicit"
@@ -257,18 +257,15 @@ const Login = ({ isAuthenticated, history, signin }) => {
                       verifyCallback={verifyCallback}
                       size="compact"
                     />
-                  </Grid>
+                  </Grid> */}
                   <Grid item sm={6}>
                     <Button
                       size={matchesMD ? "small" : "large"}
                       className={classes.btn}
                       onClick={onSubmit}
                       disabled={
-                        !!emailError ||
-                        !email ||
-                        !!passwordError ||
-                        !password ||
-                        !isVerified
+                        !!emailError || !email || !!passwordError || !password
+                        // !isVerified
                       }
                     >
                       Submit
