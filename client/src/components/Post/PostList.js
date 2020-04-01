@@ -65,7 +65,7 @@ const PostList = ({
   openModal,
   auth: { user }
 }) => {
-  const [limit, setLimit] = useState(2);
+  const [limit, setLimit] = useState(5);
   const [skip, setSkip] = useState(0);
   const [size, setSize] = useState(Infinity);
   const classes = useStyles();
