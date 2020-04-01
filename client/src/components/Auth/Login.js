@@ -251,7 +251,7 @@ const Login = ({ isAuthenticated, history, signin }) => {
                 >
                   <Grid item sm={6}>
                     <Recaptcha
-                      sitekey="6Lfrt-UUAAAAACkyCzoKi_eauwv1XEYkYCUTAoE2"
+                      sitekey={`${process.env.REACT_APP_CAPTCHA_SITE_KEY}`}
                       render="explicit"
                       onloadCallback={recaptchaLoaded}
                       verifyCallback={verifyCallback}
