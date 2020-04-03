@@ -2,6 +2,7 @@ import {
   GET_CURRENT_PROFILE,
   CREATE_PROFILE,
   GET_PROFILES,
+  SET_PROFILE_BY_ID,
   UPDATE_FOLLOWING,
   GET_TO_FOLLOWING,
   REMOVE_FROM_TO_FOLLOWING
@@ -69,6 +70,28 @@ export const getProfiles = () => async dispatch => {
       type: GET_PROFILES,
       payload: []
     });
+  }
+};
+
+export const getProfileById = profileId => async dispatch => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+  try {
+    let res = await axios.get(`/api/v1/profile/${profileId}`, config);
+    console.log(res.data);
+    dispatch({
+      type: SET_PROFILE_BY_ID,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch(setAlert(err.response.data.message, "error"));
+    // dispatch({
+    //   type: SET_PROFILE_BY_ID,
+    //   payload: {}
+    // });
   }
 };
 

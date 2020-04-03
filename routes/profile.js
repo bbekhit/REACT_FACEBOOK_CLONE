@@ -9,7 +9,8 @@ const {
   addFollower,
   removeFollowing,
   removeFollower,
-  getFollowing
+  getFollowing,
+  getProfileById
 } = require("../controllers/profile");
 const auth = require("../middleware/auth");
 const isOwner = require("../middleware/isOwner");
@@ -17,6 +18,7 @@ const isOwner = require("../middleware/isOwner");
 router.get("/me", auth, getCurrentProfile);
 router.post("/create", auth, createProfile);
 router.get("/profiles", getProfiles);
+router.get("/:profileId", getProfileById);
 router.put("/addFollowing", auth, addFollowing, addFollower);
 router.put("/removeFollowing", auth, removeFollowing, removeFollower);
 router.get("/following/:profileId", auth, getFollowing);

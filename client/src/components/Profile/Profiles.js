@@ -7,6 +7,7 @@ import {
 } from "../../redux/actions/profileActions";
 import Spinner from "../Spinner/Spinner";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -31,7 +32,8 @@ const useStyles = makeStyles(theme => ({
   },
   top: {
     marginTop: "2rem",
-    width: "60%"
+    width: "60%",
+    textDecoration: "none"
   },
   followBtn: {
     fontSize: ".5rem",
@@ -62,7 +64,11 @@ const Profiles = ({
       {profiles || profiles.length !== 0 ? (
         profiles.map((item, i) => (
           <Grid container justify="center" key={i}>
-            <Card className={classes.top}>
+            <Card
+              className={classes.top}
+              component={Link}
+              to={`/profile/${item._id}`}
+            >
               <CardContent>
                 <Typography variant="h5" component="h2">
                   Name
