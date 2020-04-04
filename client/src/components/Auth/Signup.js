@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { preSignup } from "../../redux/actions/authActions";
+import { preSignup, signup } from "../../redux/actions/authActions";
 import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Grid from "@material-ui/core/Grid";
@@ -83,7 +83,7 @@ const CssTextField = withStyles(theme => ({
   }
 }))(TextField);
 
-const Signup = ({ preSignup, isAuthenticated }) => {
+const Signup = ({ preSignup, isAuthenticated, signup }) => {
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -151,7 +151,8 @@ const Signup = ({ preSignup, isAuthenticated }) => {
     e.preventDefault();
     setLoading(true);
     const data = { name, email, password };
-    await preSignup(data);
+    // await preSignup(data);
+    await signup(data);
     setValues({
       email: "",
       name: "",
@@ -257,14 +258,14 @@ const Signup = ({ preSignup, isAuthenticated }) => {
                     size={matchesMD ? "small" : "large"}
                     className={classes.btn}
                     onClick={onSubmit}
-                    disabled={
-                      !!nameError ||
-                      !name ||
-                      !!emailError ||
-                      !email ||
-                      !!passwordError ||
-                      !password
-                    }
+                    // disabled={
+                    //   !!nameError ||
+                    //   !name ||
+                    //   !!emailError ||
+                    //   !email ||
+                    //   !!passwordError ||
+                    //   !password
+                    // }
                   >
                     Submit
                   </Button>
@@ -302,4 +303,4 @@ const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated
 });
 
-export default connect(mapStateToProps, { preSignup })(Signup);
+export default connect(mapStateToProps, { preSignup, signup })(Signup);

@@ -22,6 +22,7 @@ import AddProfile from "./components/Profile/AddProfile";
 import Profiles from "./components/Profile/Profiles";
 import ToFollow from "./components/Profile/ToFollow";
 import Comments from "./components/Post/Comments";
+import ProfileById from "./components/Profile/ProfileById";
 
 const Main = withRouter(({ location }) => {
   const [value, setValue] = useState(0);
@@ -66,6 +67,7 @@ const Main = withRouter(({ location }) => {
             <Route exact path="/toFollow" component={ToFollow} />
             <Route exact path="/toFollow" component={ToFollow} />
             <Route exact path="/post/:id" component={Comments} />
+            <Route exact path="/profile/:id" component={ProfileById} />
           </Switch>
         </div>
       </Provider>

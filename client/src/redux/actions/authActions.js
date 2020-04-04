@@ -13,7 +13,7 @@ export const preSignup = data => async dispatch => {
     const res = await axios.post("/api/v1/auth/pre-signup", body, config);
     return dispatch(setAlert(res.data.message, "success", "1"));
   } catch (err) {
-    dispatch(setAlert(err.response.data.error, "error", "2"));
+    dispatch(setAlert(err.response.data.message, "error", "2"));
   }
 };
 
@@ -28,7 +28,7 @@ export const signup = (data, history) => async dispatch => {
     const res = await axios.post("/api/v1/auth/signup", body, config);
     dispatch(setAlert(res.data.message, "success", "3"));
   } catch (err) {
-    dispatch(setAlert(err.response.data.error, "error", "4"));
+    dispatch(setAlert(err.response.data.message, "error", "4"));
   }
 };
 
@@ -46,7 +46,7 @@ export const signin = data => async dispatch => {
     dispatch(setCurrentUser(token));
     return "success";
   } catch (err) {
-    dispatch(setAlert(err.response.data.error, "error", "4"));
+    dispatch(setAlert(err.response.data.message, "error", "4"));
     return "failed";
   }
 };
@@ -111,7 +111,7 @@ export const forgotPassword = email => async dispatch => {
     dispatch(setAlert(res.data.message, "success", "5"));
     return "success";
   } catch (err) {
-    dispatch(setAlert(err.response.data.error, "error", "6"));
+    dispatch(setAlert(err.response.data.message, "error", "6"));
     return "failed";
   }
 };

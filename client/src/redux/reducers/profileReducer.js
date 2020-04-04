@@ -2,6 +2,7 @@ import {
   GET_CURRENT_PROFILE,
   GET_PROFILES,
   GET_TO_FOLLOWING,
+  SET_PROFILE_BY_ID,
   REMOVE_FROM_TO_FOLLOWING,
   UPDATE_FOLLOWING
 } from "../actions/types";
@@ -9,6 +10,7 @@ import {
 const initialState = {
   profiles: [],
   currentProfile: {},
+  profileById: {},
   toFollow: []
 };
 
@@ -18,6 +20,11 @@ const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         currentProfile: action.payload
+      };
+    case SET_PROFILE_BY_ID:
+      return {
+        ...state,
+        profileById: action.payload
       };
     case GET_PROFILES:
       return {
