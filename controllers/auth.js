@@ -66,25 +66,24 @@ exports.signin = catchAsync(async (req, res, next) => {
   if (!user) {
     return next(new AppError("Invalid credentials!!!!", 404));
   }
-  await user.comparePassword(password);
 
-  // generate a token and send to client
-  const token = jwt.sign(
-    { userId: user._id },
-    // { userId: user._id, name: user.name, email: user.email, role: user.role },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: 3600
-    }
-  );
-  res.cookie("token", token, { expiresIn: 3600 });
-  user.password = undefined;
-  return res.json({
-    token
-  });
-  // } catch (error) {
-  //   return res.status(422).json({ error: "Somethig went wrong with signin" });
-  // }
+  if (user.hasSamePassword(password)) {
+    const token = jwt.sign(
+      { userId: user._id },
+      // { userId: user._id, name: user.name, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: 3600
+      }
+    );
+    res.cookie("token", token, { expiresIn: 3600 });
+    user.password = undefined;
+    return res.json({
+      token
+    });
+  } else {
+    return next(new AppError("Invalid credentials!!!!", 404));
+  }
 });
 
 exports.signout = (req, res) => {
