@@ -3,7 +3,7 @@ import {
   getProfiles,
   getCurrentProfile,
   addFollowing,
-  removeFollowing
+  removeFollowing,
 } from "../../redux/actions/profileActions";
 import Spinner from "../Spinner/Spinner";
 import { connect } from "react-redux";
@@ -14,26 +14,27 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import Private from "../../HOC/PrivateRoute";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    minWidth: 275
+    minWidth: 275,
   },
   bullet: {
     display: "inline-block",
     margin: "0 2px",
-    transform: "scale(0.8)"
+    transform: "scale(0.8)",
   },
   title: {
-    fontSize: 14
+    fontSize: 14,
   },
   pos: {
-    marginBottom: 12
+    marginBottom: 12,
   },
   top: {
     marginTop: "2rem",
     width: "60%",
-    textDecoration: "none"
+    textDecoration: "none",
   },
   followBtn: {
     fontSize: ".5rem",
@@ -41,8 +42,8 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.common.mainBlue,
     borderStyle: "solid",
     borderWidth: "1px",
-    borderColor: theme.palette.common.mainBlue
-  }
+    borderColor: theme.palette.common.mainBlue,
+  },
 }));
 
 const Profiles = ({
@@ -51,7 +52,7 @@ const Profiles = ({
   addFollowing,
   removeFollowing,
   profile: { profiles, currentProfile },
-  auth: { user }
+  auth: { user },
 }) => {
   const classes = useStyles();
   useEffect(() => {
@@ -132,7 +133,7 @@ const Profiles = ({
                     style={{
                       background: item.follower.includes(user._id)
                         ? "#c6feff"
-                        : "transparent"
+                        : "transparent",
                     }}
                   >
                     {item.follower.includes(user._id) ? "Following" : "Follow"}
@@ -150,11 +151,11 @@ const Profiles = ({
 };
 const mapStateToProps = state => ({
   profile: state.profile,
-  auth: state.auth
+  auth: state.auth,
 });
 export default connect(mapStateToProps, {
   getProfiles,
   getCurrentProfile,
   addFollowing,
-  removeFollowing
-})(Profiles);
+  removeFollowing,
+})(Private(Profiles, "auth"));

@@ -13,6 +13,7 @@ import IconButton from "@material-ui/core/IconButton";
 import login from "../../assets/login.svg";
 import Spinner from "../Spinner/Spinner";
 import onlyGuest from "../../HOC/onlyGuest";
+import Private from "../../HOC/PrivateRoute";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -305,5 +306,5 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, { preSignup, signup })(
-  onlyGuest(Signup)
+  Private(Signup, "guest")
 );

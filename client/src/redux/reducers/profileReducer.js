@@ -4,14 +4,15 @@ import {
   GET_TO_FOLLOWING,
   SET_PROFILE_BY_ID,
   REMOVE_FROM_TO_FOLLOWING,
-  UPDATE_FOLLOWING
+  UPDATE_FOLLOWING,
 } from "../actions/types";
 
 const initialState = {
   profiles: [],
   currentProfile: {},
   profileById: {},
-  toFollow: []
+  toFollow: [],
+  loading: true,
 };
 
 const profileReducer = (state = initialState, action) => {
@@ -19,17 +20,18 @@ const profileReducer = (state = initialState, action) => {
     case GET_CURRENT_PROFILE:
       return {
         ...state,
-        currentProfile: action.payload
+        loading: false,
+        currentProfile: action.payload,
       };
     case SET_PROFILE_BY_ID:
       return {
         ...state,
-        profileById: action.payload
+        profileById: action.payload,
       };
     case GET_PROFILES:
       return {
         ...state,
-        profiles: action.payload
+        profiles: action.payload,
       };
     case UPDATE_FOLLOWING:
       return {
@@ -38,17 +40,17 @@ const profileReducer = (state = initialState, action) => {
           profile._id === action.payload._id
             ? (profile = action.payload)
             : profile
-        )
+        ),
       };
     case GET_TO_FOLLOWING:
       return {
         ...state,
-        toFollow: action.payload
+        toFollow: action.payload,
       };
     case REMOVE_FROM_TO_FOLLOWING:
       return {
         ...state,
-        toFollow: state.toFollow.filter(item => item._id !== action.payload)
+        toFollow: state.toFollow.filter(item => item._id !== action.payload),
       };
     default:
       return state;

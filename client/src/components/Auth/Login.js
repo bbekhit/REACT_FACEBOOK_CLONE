@@ -15,6 +15,7 @@ import Spinner from "../Spinner/Spinner";
 import GoogleLoginComponent from "./GoogleLoginComponent";
 import Recaptcha from "react-recaptcha";
 import onlyGuest from "../../HOC/onlyGuest";
+import Private from "../../HOC/PrivateRoute";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -306,4 +307,5 @@ const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
 });
 
-export default connect(mapStateToProps, { signin })(onlyGuest(Login));
+export default connect(mapStateToProps, { signin })(Private(Login, "guest"));
+// export default connect(mapStateToProps, { signin })(onlyGuest(Login));
