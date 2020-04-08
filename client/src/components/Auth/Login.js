@@ -14,6 +14,8 @@ import login from "../../assets/login.svg";
 import Spinner from "../Spinner/Spinner";
 import GoogleLoginComponent from "./GoogleLoginComponent";
 import Recaptcha from "react-recaptcha";
+import onlyGuest from "../../HOC/onlyGuest";
+import Private from "../../HOC/PrivateRoute";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -23,8 +25,8 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center",
     alignItems: "center",
     [theme.breakpoints.down("md")]: {
-      flexDirection: "column"
-    }
+      flexDirection: "column",
+    },
   },
   formContainer: {
     width: "80vw",
@@ -34,11 +36,11 @@ const useStyles = makeStyles(theme => ({
     padding: "1.5rem",
     borderRadius: "1.5rem",
     [theme.breakpoints.down("md")]: {
-      padding: ".5rem"
+      padding: ".5rem",
     },
     [theme.breakpoints.down("sm")]: {
-      padding: "1.25rem"
-    }
+      padding: "1.25rem",
+    },
   },
   btn: {
     ...theme.typography.submitBtn,
@@ -46,53 +48,53 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       background: theme.palette.common.whiteColor,
       color: theme.palette.common.mainBlue,
-      border: "1px solid #4f34ff"
-    }
+      border: "1px solid #4f34ff",
+    },
   },
   inputColor: {
-    color: theme.palette.common.mainBlue
+    color: theme.palette.common.mainBlue,
   },
   image: {
     [theme.breakpoints.down("sm")]: {
       width: "80%",
-      height: "80%"
-    }
+      height: "80%",
+    },
   },
   link: {
-    ...theme.link
-  }
+    ...theme.link,
+  },
 }));
 
 const CssTextField = withStyles(theme => ({
   root: {
     "& label.Mui-focused": {
-      color: theme.palette.common.mainBlue
+      color: theme.palette.common.mainBlue,
     },
     "& .MuiInput-underline:after": {
-      borderBottomColor: theme.palette.common.mainBlue
+      borderBottomColor: theme.palette.common.mainBlue,
     },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
-        borderColor: theme.palette.common.mainBlue
+        borderColor: theme.palette.common.mainBlue,
       },
       "&:hover fieldset": {
-        borderColor: theme.palette.common.mainBlue
+        borderColor: theme.palette.common.mainBlue,
       },
       "&.Mui-focused fieldset": {
-        borderColor: theme.palette.common.mainBlue
-      }
-    }
-  }
+        borderColor: theme.palette.common.mainBlue,
+      },
+    },
+  },
 }))(TextField);
 
 const Login = ({ isAuthenticated, history, signin }) => {
   const [values, setValues] = useState({
     email: "",
-    password: ""
+    password: "",
   });
   const [errors, setErrors] = useState({
     emailError: "",
-    passwordError: ""
+    passwordError: "",
   });
   const [isVerified, setIsVerified] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -125,7 +127,7 @@ const Login = ({ isAuthenticated, history, signin }) => {
         if (!valid) {
           setErrors({
             ...errors,
-            passwordError: "At least 6 characters"
+            passwordError: "At least 6 characters",
           });
         } else {
           setErrors({ ...errors, passwordError: "" });
@@ -144,7 +146,7 @@ const Login = ({ isAuthenticated, history, signin }) => {
     if (result === "success") {
       setValues({
         email: "",
-        password: ""
+        password: "",
       });
       setLoading(false);
       history.push("/");
@@ -163,9 +165,9 @@ const Login = ({ isAuthenticated, history, signin }) => {
     }
   };
 
-  if (isAuthenticated) {
-    return <Redirect to="/" />;
-  }
+  // if (isAuthenticated) {
+  //   return <Redirect to="/" />;
+  // }
 
   return (
     <>
@@ -208,12 +210,12 @@ const Login = ({ isAuthenticated, history, signin }) => {
                     id="email"
                     fullWidth
                     InputProps={{
-                      className: classes.inputColor
+                      className: classes.inputColor,
                     }}
                     InputLabelProps={{
                       style: {
-                        color: theme.palette.common.mainBlue
-                      }
+                        color: theme.palette.common.mainBlue,
+                      },
                     }}
                     onChange={onChange}
                     value={email}
@@ -231,12 +233,12 @@ const Login = ({ isAuthenticated, history, signin }) => {
                     type="password"
                     fullWidth
                     InputProps={{
-                      className: classes.inputColor
+                      className: classes.inputColor,
                     }}
                     InputLabelProps={{
                       style: {
-                        color: theme.palette.common.mainBlue
-                      }
+                        color: theme.palette.common.mainBlue,
+                      },
                     }}
                     onChange={onChange}
                     value={password}
@@ -302,7 +304,8 @@ const Login = ({ isAuthenticated, history, signin }) => {
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
-export default connect(mapStateToProps, { signin })(Login);
+export default connect(mapStateToProps, { signin })(Private(Login, "guest"));
+// export default connect(mapStateToProps, { signin })(onlyGuest(Login));

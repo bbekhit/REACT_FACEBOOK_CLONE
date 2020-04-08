@@ -1,17 +1,19 @@
 const Profile = require("../models/Profile");
+const catchAsync = require("../utils/catchAsync");
+const AppError = require("../utils/AppError");
 
 exports.profileById = (req, res, next, id) => {
-  Profile.findById(id)
-    // .populate("user", "_id name role")
-    .exec((err, profile) => {
-      if (err || !profile) {
-        return res.status(400).json({
-          error: "No profile found"
-        });
-      }
-      req.profile = profile;
-      next();
-    });
+  // Profile.findById(id)
+  //   // .populate("user", "_id name role")
+  //   .exec((err, profile) => {
+  //     if (err || !profile) {
+  //       return res.status(400).json({
+  //         message: "No profile found from profileById"
+  //       });
+  //     }
+  //     req.profile = profile;
+  next();
+  // });
 };
 
 exports.getCurrentProfile = async (req, res) => {
@@ -59,6 +61,16 @@ exports.getProfiles = async (req, res) => {
     res.status(422).json({ error: "Can't fetch profiless, try again later" });
   }
 };
+
+exports.getProfileById = catchAsync(async (req, res, next) => {
+  const profile = await Profile.findById(req.params.profileId);
+
+  if (!profile) {
+    return next(new AppError(`No profile found`, 404));
+  }
+
+  res.status(200).json(profile);
+});
 
 exports.addFollowing = async (req, res, next) => {
   try {

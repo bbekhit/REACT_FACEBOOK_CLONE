@@ -1,8 +1,14 @@
-import { SET_CURRENT_USER, LOGOUT_USER } from "../actions/types";
+import {
+  SET_CURRENT_USER,
+  LOGOUT_USER,
+  RESOLVE_AUTH,
+  RESET_AUTH,
+} from "../actions/types";
 
 const initialState = {
   isAuthenticated: false,
-  user: {}
+  isAuthResolved: false,
+  user: {},
 };
 
 export default (state = initialState, action) => {
@@ -11,12 +17,24 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isAuthenticated: true,
-        user: action.payload
+        // isAuthResolved: true,
+        user: { ...action.payload },
+        // user: action.payload
       };
     case LOGOUT_USER:
       return {
         isAuthenticated: false,
-        user: {}
+        user: {},
+      };
+    case RESOLVE_AUTH:
+      return {
+        ...state,
+        isAuthResolved: true,
+      };
+    case RESET_AUTH:
+      return {
+        ...state,
+        isAuthResolved: false,
       };
     default:
       return state;

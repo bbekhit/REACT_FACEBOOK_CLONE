@@ -3,14 +3,17 @@ const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 const sgMail = require("@sendgrid/mail"); // SENDGRID_API_KEY
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const catchAsync = require("../utils/catchAsync");
+const AppError = require("../utils/AppError");
 
-exports.preSignup = (req, res) => {
+exports.preSignup = catchAsync(async (req, res, next) => {
   const { name, email, password } = req.body;
   User.findOne({ email: email.toLowerCase() }, (err, user) => {
     if (user) {
-      return res.status(400).json({
-        error: "Email is taken"
-      });
+      // return res.status(400).json({
+      //   error: "Email is taken"
+      // });
+      return next(new AppError(`Email already Taken`, 422));
     }
     const token = jwt.sign(
       { name, email, password },
@@ -34,43 +37,37 @@ exports.preSignup = (req, res) => {
 					<p>https://MYFACEAPP.com</p>
 			`
     };
-
     sgMail.send(emailData).then(sent => {
       return res.json({
         message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
       });
     });
   });
-};
+});
 
-exports.signup = async (req, res) => {
-  try {
-    let user = await User.findOne({ email: req.body.email });
-    if (user) {
-      return res.status(422).json({
-        status: "fail",
-        error: "Email already Taken"
-      });
-    }
-    user = new User(req.body);
-    await user.save();
-    res
-      .status(200)
-      .json({ message: "You Successfuly signed up, please login" });
-  } catch (error) {
-    res.status(422).json({ error: "Somethig went wrong with signup" });
+exports.signup = catchAsync(async (req, res, next) => {
+  let user = await User.findOne({ email: req.body.email });
+  if (user) {
+    // return res.status(422).json({
+    //   status: "fail",
+    //   error: "Email already Taken"
+    // });
+    return next(new AppError("Email already Taken", 404));
   }
-};
+  user = new User(req.body);
+  await user.save();
+  res.status(200).json({ message: "You Successfuly signed up, please login" });
+});
 
-exports.signin = async (req, res) => {
+exports.signin = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
-  try {
-    let user = await User.findOne({ email });
-    if (!user) {
-      return res.status(422).json({ error: "Invalid credentials" });
-    }
-    await user.comparePassword(password);
-    // generate a token and send to client
+  // try {
+  let user = await User.findOne({ email });
+  if (!user) {
+    return next(new AppError("Invalid credentials!!!!", 404));
+  }
+
+  if (user.hasSamePassword(password)) {
     const token = jwt.sign(
       { userId: user._id },
       // { userId: user._id, name: user.name, email: user.email, role: user.role },
@@ -84,10 +81,10 @@ exports.signin = async (req, res) => {
     return res.json({
       token
     });
-  } catch (error) {
-    return res.status(422).json({ error: "Somethig went wrong with signin" });
+  } else {
+    return next(new AppError("Invalid credentials!!!!", 404));
   }
-};
+});
 
 exports.signout = (req, res) => {
   res.clearCookie("token");
@@ -97,18 +94,14 @@ exports.signout = (req, res) => {
 };
 
 exports.getCurrentUser = async (req, res) => {
-  try {
-    let user = await User.findById(req.user._id).select("-password");
-    // let user = await User.findById(req.user._id).select("-password");
-    return res.status(200).json({
-      status: "success",
-      user
-    });
-  } catch (error) {
-    return res
-      .status(422)
-      .json({ error: "Somethig went wrong with Authentication" });
+  let user = await User.findById(req.user._id).select("-password");
+  if (!user) {
+    return next(new AppError(`No user found`, 422));
   }
+  return res.status(200).json({
+    status: "success",
+    user
+  });
 };
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -168,28 +161,24 @@ exports.googleLogin = (req, res) => {
     });
 };
 
-exports.forgotPassword = (req, res) => {
+exports.forgotPassword = catchAsync(async (req, res, next) => {
   const { email } = req.body;
 
-  User.findOne({ email }, (err, user) => {
-    if (err || !user) {
-      return res.status(401).json({
-        error: "User with that email does not exist"
-      });
-    }
+  let user = await User.findOne({ email });
+  if (!user) {
+    return next(new AppError(`No user found`, 422));
+  }
 
-    const token = jwt.sign(
-      { userId: user._id },
-      process.env.JWT_RESET_PASSWORD,
-      { expiresIn: "10m" }
-    );
+  const token = jwt.sign({ userId: user._id }, process.env.JWT_RESET_PASSWORD, {
+    expiresIn: "10m"
+  });
 
-    // email
-    const emailData = {
-      from: process.env.EMAIL_FROM,
-      to: email,
-      subject: `Password reset link`,
-      html: `
+  // email
+  const emailData = {
+    from: process.env.EMAIL_FROM,
+    to: email,
+    subject: `Password reset link`,
+    html: `
 					<p>Please use the following link to reset your password:</p>
 					<p>${
             process.env.NODE_ENV === "production"
@@ -200,21 +189,20 @@ exports.forgotPassword = (req, res) => {
 					<p>This email may contain sensetive information</p>
 					<p>https://MYFACEAPP.com</p>
 			`
-    };
-    // populating the db > user > resetPasswordLink
-    return user.updateOne({ resetPasswordLink: token }, (err, success) => {
-      if (err) {
-        return res.json({ error: "Something went wrong" });
-      } else {
-        sgMail.send(emailData).then(sent => {
-          return res.json({
-            message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
-          });
+  };
+  // populating the db > user > resetPasswordLink
+  return user.updateOne({ resetPasswordLink: token }, (err, success) => {
+    if (err) {
+      return res.json({ error: "Something went wrong" });
+    } else {
+      sgMail.send(emailData).then(sent => {
+        return res.json({
+          message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
         });
-      }
-    });
+      });
+    }
   });
-};
+});
 
 exports.resetPassword = (req, res) => {
   const { resetPasswordLink, newPassword } = req.body;

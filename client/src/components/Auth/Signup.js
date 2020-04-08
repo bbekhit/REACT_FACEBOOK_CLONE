@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { preSignup } from "../../redux/actions/authActions";
+import { preSignup, signup } from "../../redux/actions/authActions";
 import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Grid from "@material-ui/core/Grid";
@@ -12,6 +12,8 @@ import HomeIcon from "@material-ui/icons/Home";
 import IconButton from "@material-ui/core/IconButton";
 import login from "../../assets/login.svg";
 import Spinner from "../Spinner/Spinner";
+import onlyGuest from "../../HOC/onlyGuest";
+import Private from "../../HOC/PrivateRoute";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -21,8 +23,8 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center",
     alignItems: "center",
     [theme.breakpoints.down("md")]: {
-      flexDirection: "column"
-    }
+      flexDirection: "column",
+    },
   },
   formContainer: {
     width: "80vw",
@@ -32,11 +34,11 @@ const useStyles = makeStyles(theme => ({
     padding: "1.5rem",
     borderRadius: "1.5rem",
     [theme.breakpoints.down("md")]: {
-      padding: ".5rem"
+      padding: ".5rem",
     },
     [theme.breakpoints.down("sm")]: {
-      padding: "1.25rem"
-    }
+      padding: "1.25rem",
+    },
   },
   btn: {
     ...theme.typography.submitBtn,
@@ -44,55 +46,55 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       background: theme.palette.common.whiteColor,
       color: theme.palette.common.mainBlue,
-      border: "1px solid #4f34ff"
-    }
+      border: "1px solid #4f34ff",
+    },
   },
   inputColor: {
-    color: theme.palette.common.mainBlue
+    color: theme.palette.common.mainBlue,
   },
   image: {
     [theme.breakpoints.down("sm")]: {
       width: "80%",
-      height: "80%"
-    }
+      height: "80%",
+    },
   },
   link: {
-    ...theme.link
-  }
+    ...theme.link,
+  },
 }));
 
 const CssTextField = withStyles(theme => ({
   root: {
     "& label.Mui-focused": {
-      color: theme.palette.common.mainBlue
+      color: theme.palette.common.mainBlue,
     },
     "& .MuiInput-underline:after": {
-      borderBottomColor: theme.palette.common.mainBlue
+      borderBottomColor: theme.palette.common.mainBlue,
     },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
-        borderColor: theme.palette.common.mainBlue
+        borderColor: theme.palette.common.mainBlue,
       },
       "&:hover fieldset": {
-        borderColor: theme.palette.common.mainBlue
+        borderColor: theme.palette.common.mainBlue,
       },
       "&.Mui-focused fieldset": {
-        borderColor: theme.palette.common.mainBlue
-      }
-    }
-  }
+        borderColor: theme.palette.common.mainBlue,
+      },
+    },
+  },
 }))(TextField);
 
-const Signup = ({ preSignup, isAuthenticated }) => {
+const Signup = ({ preSignup, isAuthenticated, signup }) => {
   const [values, setValues] = useState({
     name: "",
     email: "",
-    password: ""
+    password: "",
   });
   const [errors, setErrors] = useState({
     nameError: "",
     emailError: "",
-    passwordError: ""
+    passwordError: "",
   });
   const [loading, setLoading] = useState(false);
   const { name, email, password } = values;
@@ -123,7 +125,7 @@ const Signup = ({ preSignup, isAuthenticated }) => {
         if (!valid) {
           setErrors({
             ...errors,
-            nameError: "Name too short"
+            nameError: "Name too short",
           });
         } else {
           setErrors({ ...errors, nameError: "" });
@@ -136,7 +138,7 @@ const Signup = ({ preSignup, isAuthenticated }) => {
         if (!valid) {
           setErrors({
             ...errors,
-            passwordError: "At least 6 characters"
+            passwordError: "At least 6 characters",
           });
         } else {
           setErrors({ ...errors, passwordError: "" });
@@ -151,17 +153,18 @@ const Signup = ({ preSignup, isAuthenticated }) => {
     e.preventDefault();
     setLoading(true);
     const data = { name, email, password };
-    await preSignup(data);
+    // await preSignup(data);
+    await signup(data);
     setValues({
       email: "",
       name: "",
-      password: ""
+      password: "",
     });
     setLoading(false);
   };
 
   if (isAuthenticated) {
-    return <Redirect to="/dashboard" />;
+    return <Redirect to="/" />;
   }
 
   return (
@@ -197,12 +200,12 @@ const Signup = ({ preSignup, isAuthenticated }) => {
                     id="name"
                     fullWidth
                     InputProps={{
-                      className: classes.inputColor
+                      className: classes.inputColor,
                     }}
                     InputLabelProps={{
                       style: {
-                        color: theme.palette.common.mainBlue
-                      }
+                        color: theme.palette.common.mainBlue,
+                      },
                     }}
                     value={name}
                     onChange={onChange}
@@ -218,12 +221,12 @@ const Signup = ({ preSignup, isAuthenticated }) => {
                     id="email"
                     fullWidth
                     InputProps={{
-                      className: classes.inputColor
+                      className: classes.inputColor,
                     }}
                     InputLabelProps={{
                       style: {
-                        color: theme.palette.common.mainBlue
-                      }
+                        color: theme.palette.common.mainBlue,
+                      },
                     }}
                     value={email}
                     onChange={onChange}
@@ -241,12 +244,12 @@ const Signup = ({ preSignup, isAuthenticated }) => {
                     type="password"
                     fullWidth
                     InputProps={{
-                      className: classes.inputColor
+                      className: classes.inputColor,
                     }}
                     InputLabelProps={{
                       style: {
-                        color: theme.palette.common.mainBlue
-                      }
+                        color: theme.palette.common.mainBlue,
+                      },
                     }}
                     value={password}
                     onChange={onChange}
@@ -257,14 +260,14 @@ const Signup = ({ preSignup, isAuthenticated }) => {
                     size={matchesMD ? "small" : "large"}
                     className={classes.btn}
                     onClick={onSubmit}
-                    disabled={
-                      !!nameError ||
-                      !name ||
-                      !!emailError ||
-                      !email ||
-                      !!passwordError ||
-                      !password
-                    }
+                    // disabled={
+                    //   !!nameError ||
+                    //   !name ||
+                    //   !!emailError ||
+                    //   !email ||
+                    //   !!passwordError ||
+                    //   !password
+                    // }
                   >
                     Submit
                   </Button>
@@ -299,7 +302,9 @@ const Signup = ({ preSignup, isAuthenticated }) => {
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
-export default connect(mapStateToProps, { preSignup })(Signup);
+export default connect(mapStateToProps, { preSignup, signup })(
+  Private(Signup, "guest")
+);

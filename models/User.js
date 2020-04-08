@@ -1,16 +1,18 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const validator = require("validator");
 
 const userSchema = mongoose.Schema({
   name: {
     type: String,
-    unique: true
-    // required: true
+    unique: true,
+    required: [true, "Must provide name"]
   },
   email: {
     type: String,
     unique: true,
-    required: true
+    required: [true, "Must provide email"],
+    validate: [validator.isEmail, "Please provide a valid email"]
   },
   role: {
     type: String,
@@ -45,20 +47,24 @@ userSchema.pre("save", function(next) {
   });
 });
 
-userSchema.methods.comparePassword = function(candidatePassword) {
-  const user = this;
-  return new Promise((resolve, reject) => {
-    bcrypt.compare(candidatePassword, user.password, (err, isMatch) => {
-      if (err) {
-        return reject(err);
-      }
-      if (!isMatch) {
-        return reject(false);
-      }
-      resolve(true);
-    });
-  });
+userSchema.methods.hasSamePassword = function(providedPassword) {
+  return bcrypt.compareSync(providedPassword, this.password);
 };
+
+// userSchema.methods.comparePassword = function(candidatePassword) {
+//   const user = this;
+//   return new Promise((resolve, reject) => {
+//     bcrypt.compare(candidatePassword, user.password, (err, isMatch) => {
+//       if (err) {
+//         return reject(err);
+//       }
+//       if (!isMatch) {
+//         return reject(false);
+//       }
+//       resolve(true);
+//     });
+//   });
+// };
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
