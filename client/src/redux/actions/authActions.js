@@ -1,12 +1,17 @@
-import { LOGOUT_USER, SET_CURRENT_USER } from "./types";
+import {
+  LOGOUT_USER,
+  SET_CURRENT_USER,
+  RESOLVE_AUTH,
+  RESET_AUTH,
+} from "./types";
 import axios from "axios";
 import { setAlert } from "./alertActions";
 
 export const preSignup = data => async dispatch => {
   const config = {
     headers: {
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+    },
   };
   const body = JSON.stringify(data);
   try {
@@ -20,8 +25,8 @@ export const preSignup = data => async dispatch => {
 export const signup = (data, history) => async dispatch => {
   const config = {
     headers: {
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+    },
   };
   const body = JSON.stringify(data);
   try {
@@ -35,8 +40,8 @@ export const signup = (data, history) => async dispatch => {
 export const signin = data => async dispatch => {
   const config = {
     headers: {
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+    },
   };
   const body = JSON.stringify(data);
   try {
@@ -54,7 +59,7 @@ export const signin = data => async dispatch => {
 export const signout = () => dispatch => {
   localStorage.removeItem("token");
   dispatch({
-    type: LOGOUT_USER
+    type: LOGOUT_USER,
   });
   window.location.href = "/login";
 };
@@ -63,29 +68,41 @@ export const setCurrentUser = data => async dispatch => {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: data
-    }
+      Authorization: data,
+    },
   };
   try {
     const res = await axios.get("/api/v1/auth/", config);
     const { user } = res.data;
     dispatch({
       type: SET_CURRENT_USER,
-      payload: user
+      payload: user,
     });
   } catch (err) {
     dispatch({
       type: SET_CURRENT_USER,
-      payload: {}
+      payload: {},
     });
   }
+};
+
+export const resolveAuth = () => {
+  return {
+    type: RESOLVE_AUTH,
+  };
+};
+
+export const resetAuth = () => {
+  return {
+    type: RESET_AUTH,
+  };
 };
 
 export const signinWithGoogle = data => async dispatch => {
   const config = {
     headers: {
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+    },
   };
   const body = JSON.stringify(data);
   try {
@@ -102,8 +119,8 @@ export const signinWithGoogle = data => async dispatch => {
 export const forgotPassword = email => async dispatch => {
   const config = {
     headers: {
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+    },
   };
   const body = JSON.stringify(email);
   try {
@@ -119,8 +136,8 @@ export const forgotPassword = email => async dispatch => {
 export const resetPassword = resetInfo => async dispatch => {
   const config = {
     headers: {
-      "Content-Type": "application/json"
-    }
+      "Content-Type": "application/json",
+    },
   };
   const body = JSON.stringify(resetInfo);
   try {

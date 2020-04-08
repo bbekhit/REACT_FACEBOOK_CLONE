@@ -8,11 +8,11 @@ const Spinner = () => {
     left: 0,
     height: "100vh",
     width: "100vw",
-    background: "rgba(0, 0, 0, 0.7)",
+    background: "transparent", //"rgba(0, 0, 0, 0.1)",
     zIndex: 1700,
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   };
   return (
     <div style={styles}>
