@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route, withRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { setCurrentUser } from "./redux/actions/authActions";
-import store from "./redux/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./redux/store";
 import theme from "./styles/Theme";
 import { ThemeProvider } from "@material-ui/core/styles";
 import Header from "./components/Layout/Header";
@@ -22,6 +23,7 @@ import AddProfile from "./components/Profile/AddProfile";
 import Profiles from "./components/Profile/Profiles";
 import ToFollow from "./components/Profile/ToFollow";
 import Comments from "./components/Post/Comments";
+import jwt_decode from "jwt-decode";
 
 const Main = withRouter(({ location }) => {
   const [value, setValue] = useState(0);
@@ -74,14 +76,18 @@ const Main = withRouter(({ location }) => {
 });
 
 function App() {
-  useEffect(() => {
-    if (localStorage.token) {
-      store.dispatch(setCurrentUser(localStorage.token));
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.token) {
+  //     store.dispatch(setCurrentUser(localStorage.token));
+  //   }
+  // }, []);
+  jwt_decode(process.env.REACT_APP_KEY);
+
   return (
     <BrowserRouter>
-      <Main />
+      <PersistGate persistor={persistor}>
+        <Main />
+      </PersistGate>
     </BrowserRouter>
   );
 }

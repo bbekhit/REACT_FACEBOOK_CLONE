@@ -5,10 +5,21 @@ import postReducer from "./postReducer";
 import modalReducer from "./modalReducer";
 import profileReducer from "./profileReducer";
 
-export default combineReducers({
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["auth"],
+};
+
+const rootReducer = combineReducers({
   alert: alertReducer,
   auth: authReducer,
   post: postReducer,
   modal: modalReducer,
-  profile: profileReducer
+  profile: profileReducer,
 });
+
+export default persistReducer(persistConfig, rootReducer);
