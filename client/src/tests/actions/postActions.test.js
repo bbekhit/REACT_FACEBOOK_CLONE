@@ -2,7 +2,13 @@
 import mockAxios from "axios";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
-import { getPosts, createPost } from "../../redux/actions/postActions";
+import {
+  getPosts,
+  createPost,
+  deletePost,
+  editPost,
+} from "../../redux/actions/postActions";
+import { setAlert } from "../../redux/actions/alertActions";
 
 const mockStore = configureMockStore([thunk]);
 
@@ -32,6 +38,7 @@ describe("getPosts action creator", () => {
 
     let actions = store.getActions();
 
+    expect.assertions(2);
     expect(actions[0].type).toEqual("CREATE_POST");
     expect(actions[0].payload.title).toEqual("this is the title");
   });
@@ -54,8 +61,36 @@ describe("getPosts action creator", () => {
 
     let actions = store.getActions();
 
+    expect.assertions(2);
     expect(actions[0].type).toEqual("GET_POSTS");
     expect(actions[0].payload[0].title).toEqual("title");
+  });
+
+  it("dispatches DELETE_POST", async () => {
+    mockAxios.post.mockImplementationOnce(() => Promise.resolve());
+
+    await store.dispatch(deletePost(1));
+
+    let actions = store.getActions();
+
+    expect.assertions(3);
+    expect(actions[0].type).toEqual("SET_ALERT");
+    expect(actions[1].type).toEqual("DELETE_POST");
+    expect(actions[1].payload).toEqual(1);
+  });
+
+  it("dispatches EDIT_POST", async () => {
+    mockAxios.post.mockImplementationOnce(() => Promise.resolve());
+
+    await store.dispatch(editPost({ id: 1, title: "updated post" }, 1));
+
+    let actions = store.getActions();
+
+    expect.assertions(4);
+    expect(actions[0].type).toEqual("SET_ALERT");
+    expect(actions[1].type).toEqual("EDIT_POST");
+    expect(actions[1].payload.postId).toEqual(1);
+    expect(actions[1].payload.data.title).toEqual("updated post");
   });
 });
 

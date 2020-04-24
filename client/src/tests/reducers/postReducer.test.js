@@ -71,4 +71,20 @@ describe("Post reducers", () => {
 
     expect(state).toEqual(posts);
   });
+
+  it("should update comments", () => {
+    let comment = { id: 3, body: "Third-comment", user: 3 };
+    let updatedPost = {
+      _id: 1,
+      title: "Title-1",
+      body: "Body-1",
+      postedBy: "1",
+      likes: [],
+      comments: [{ id: 1, body: "First-comment", user: 1 }, { ...comment }],
+    };
+    let action = { type: "ADD_COMMENT", payload: updatedPost };
+    const state = postReducer(posts, action);
+
+    expect(state[0]).toEqual(updatedPost);
+  });
 });

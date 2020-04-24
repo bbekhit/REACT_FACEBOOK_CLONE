@@ -5,6 +5,7 @@ import {
   EDIT_POST,
   UPDATE_COMMENT,
   UPDATE_LIKE,
+  ADD_COMMENT,
 } from "./types";
 import { setAlert } from "./alertActions";
 import axios from "axios";
@@ -44,6 +45,7 @@ export const getPosts = (skip, limit, previousState = []) => async dispatch => {
     let res = await axios.post("/api/v1/post/posts", body, config);
 
     let newState = [...previousState, ...res.data.posts];
+
     dispatch({
       type: GET_POSTS,
       payload: newState,
@@ -74,8 +76,6 @@ export const deletePost = postId => async dispatch => {
 };
 
 export const editPost = (data, postId) => async dispatch => {
-  console.log(typeof postId);
-
   let token = localStorage.getItem("token");
   const config = {
     headers: {
@@ -114,7 +114,7 @@ export const addComment = (comment, postId) => async dispatch => {
     );
 
     dispatch({
-      type: UPDATE_COMMENT,
+      type: ADD_COMMENT,
       payload: res.data,
     });
   } catch (err) {

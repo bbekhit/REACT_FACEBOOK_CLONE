@@ -5,6 +5,7 @@ import {
   EDIT_POST,
   UPDATE_COMMENT,
   UPDATE_LIKE,
+  ADD_COMMENT,
 } from "../actions/types";
 
 const initialState = [];
@@ -21,7 +22,7 @@ const postReducer = (state = initialState, action) => {
       return state.map(post =>
         post._id === action.payload.postId ? (post = action.payload.data) : post
       );
-    case UPDATE_COMMENT:
+    case ADD_COMMENT:
       return state.map(post =>
         post._id === action.payload._id ? (post = action.payload) : post
       );
