@@ -1,3 +1,27 @@
 {
-  "snapshotSerializers": ["enzyme-to-json/serializer"]
+  "setupFiles": ["<rootDir>/src/setupTests.js"],
+  "testRegex": "/*.test.js$",
+  "collectCoverage": true,
+  "coverageReporters": ["lcov", "html"],
+  "coverageDirectory": "test-coverage",
+  "coverageThreshold": {
+    "global": {
+      "branches": 75,
+      "functions": 75,
+      "lines": 75,
+      "statements": 75
+    }
+  },
+  "moduleDirectories": ["node_modules", "src"],
+  "collectCoverageFrom": [
+    "**/src/components/**/*.{js,jsx}",
+    "**/src/redux/utils/**/*.{js,jsx}",
+    "**/src/services/**/*.{js,jsx}",
+    "!**/src/components/App/App.js",
+    "!**/src/components/AppWrapper.js",
+    "!**/src/components/FilterContext/FilterContext.js",
+    "!**/src/components/TLFQuickView/index.js"
+  ],
+  "moduleFileExtensions": ["jsx", "js", "json"],
+  "testEnvironment": "node"
 }
