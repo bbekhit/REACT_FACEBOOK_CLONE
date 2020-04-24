@@ -1,0 +1,250 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Posts List should render a list of posts 1`] = `
+<WithStyles(ForwardRef(Grid))
+  container={true}
+  style={
+    Object {
+      "padding": "2rem",
+    }
+  }
+>
+  <WithStyles(ForwardRef(List))
+    className="makeStyles-root-1"
+  >
+    <WithStyles(ForwardRef(Grid))
+      className="makeStyles-list-3"
+      container={true}
+      direction="column"
+      key="undefined-0"
+    >
+      <WithStyles(ForwardRef(Grid))
+        item={true}
+      >
+        <WithStyles(ForwardRef(ListItem))
+          alignItems="flex-start"
+          sm={8}
+        >
+          <WithStyles(ForwardRef(ListItemAvatar))>
+            <WithStyles(ForwardRef(Avatar))
+              alt="1"
+              src=""
+            />
+          </WithStyles(ForwardRef(ListItemAvatar))>
+          <WithStyles(ForwardRef(ListItemText))
+            primary="Title-1"
+            secondary={
+              <React.Fragment>
+                <ForwardRef(WithStyles)
+                  className="makeStyles-inline-2"
+                  color="textPrimary"
+                  component="span"
+                  variant="body2"
+                >
+                  1
+                </ForwardRef(WithStyles)>
+                Body-1
+              </React.Fragment>
+            }
+          />
+        </WithStyles(ForwardRef(ListItem))>
+      </WithStyles(ForwardRef(Grid))>
+      <WithStyles(ForwardRef(Grid))
+        container={true}
+        justify="space-around"
+        style={
+          Object {
+            "paddingBottom": ".25rem",
+          }
+        }
+      >
+        <WithStyles(ForwardRef(Grid))
+          item={true}
+        >
+          <WithStyles(ForwardRef(Button))
+            className="makeStyles-followBtn-5"
+            component={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "displayName": "Link",
+                "propTypes": Object {
+                  "innerRef": [Function],
+                  "onClick": [Function],
+                  "replace": [Function],
+                  "target": [Function],
+                  "to": [Function],
+                },
+                "render": [Function],
+              }
+            }
+            to="/post/1"
+          >
+            Comments
+          </WithStyles(ForwardRef(Button))>
+        </WithStyles(ForwardRef(Grid))>
+        <WithStyles(ForwardRef(Grid))
+          item={true}
+        />
+        <WithStyles(ForwardRef(Grid))
+          item={true}
+          style={
+            Object {
+              "alignSelf": "center",
+            }
+          }
+        >
+          <ThumbUpAltIcon
+            color="inherit"
+            onClick={[Function]}
+          />
+          <span
+            style={
+              Object {
+                "bottom": "5px",
+                "marginLeft": "3px",
+                "position": "relative",
+              }
+            }
+          />
+        </WithStyles(ForwardRef(Grid))>
+      </WithStyles(ForwardRef(Grid))>
+    </WithStyles(ForwardRef(Grid))>
+    <WithStyles(ForwardRef(Grid))
+      className="makeStyles-list-3"
+      container={true}
+      direction="column"
+      key="undefined-1"
+    >
+      <WithStyles(ForwardRef(Grid))
+        item={true}
+      >
+        <WithStyles(ForwardRef(ListItem))
+          alignItems="flex-start"
+          sm={8}
+        >
+          <WithStyles(ForwardRef(ListItemAvatar))>
+            <WithStyles(ForwardRef(Avatar))
+              alt="2"
+              src=""
+            />
+          </WithStyles(ForwardRef(ListItemAvatar))>
+          <WithStyles(ForwardRef(ListItemText))
+            primary="Title-2"
+            secondary={
+              <React.Fragment>
+                <ForwardRef(WithStyles)
+                  className="makeStyles-inline-2"
+                  color="textPrimary"
+                  component="span"
+                  variant="body2"
+                >
+                  2
+                </ForwardRef(WithStyles)>
+                Body-2
+              </React.Fragment>
+            }
+          />
+        </WithStyles(ForwardRef(ListItem))>
+      </WithStyles(ForwardRef(Grid))>
+      <WithStyles(ForwardRef(Grid))
+        container={true}
+        justify="space-around"
+        style={
+          Object {
+            "paddingBottom": ".25rem",
+          }
+        }
+      >
+        <WithStyles(ForwardRef(Grid))
+          item={true}
+        >
+          <WithStyles(ForwardRef(Button))
+            className="makeStyles-followBtn-5"
+            component={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "displayName": "Link",
+                "propTypes": Object {
+                  "innerRef": [Function],
+                  "onClick": [Function],
+                  "replace": [Function],
+                  "target": [Function],
+                  "to": [Function],
+                },
+                "render": [Function],
+              }
+            }
+            to="/post/2"
+          >
+            Comments
+          </WithStyles(ForwardRef(Button))>
+        </WithStyles(ForwardRef(Grid))>
+        <WithStyles(ForwardRef(Grid))
+          item={true}
+        />
+        <WithStyles(ForwardRef(Grid))
+          item={true}
+          style={
+            Object {
+              "alignSelf": "center",
+            }
+          }
+        >
+          <ThumbUpAltIcon
+            color="inherit"
+            onClick={[Function]}
+          />
+          <span
+            style={
+              Object {
+                "bottom": "5px",
+                "marginLeft": "3px",
+                "position": "relative",
+              }
+            }
+          />
+        </WithStyles(ForwardRef(Grid))>
+      </WithStyles(ForwardRef(Grid))>
+    </WithStyles(ForwardRef(Grid))>
+  </WithStyles(ForwardRef(List))>
+  <WithStyles(ForwardRef(Grid))
+    container={true}
+    justify="flex-end"
+  >
+    <WithStyles(ForwardRef(Button))
+      className="makeStyles-followBtn-5"
+      onClick={[Function]}
+    >
+      Load More
+    </WithStyles(ForwardRef(Button))>
+  </WithStyles(ForwardRef(Grid))>
+</WithStyles(ForwardRef(Grid))>
+`;
+
+exports[`Posts List should render a spinner if no posts found of posts 1`] = `
+<WithStyles(ForwardRef(Grid))
+  container={true}
+  style={
+    Object {
+      "padding": "2rem",
+    }
+  }
+>
+  <WithStyles(ForwardRef(List))
+    className="makeStyles-root-1"
+  >
+    <Spinner />
+  </WithStyles(ForwardRef(List))>
+  <WithStyles(ForwardRef(Grid))
+    container={true}
+    justify="flex-end"
+  >
+    <WithStyles(ForwardRef(Button))
+      className="makeStyles-followBtn-5"
+      onClick={[Function]}
+    >
+      Load More
+    </WithStyles(ForwardRef(Button))>
+  </WithStyles(ForwardRef(Grid))>
+</WithStyles(ForwardRef(Grid))>
+`;

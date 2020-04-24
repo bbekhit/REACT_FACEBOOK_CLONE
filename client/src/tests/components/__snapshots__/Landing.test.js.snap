@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render Landing page correctly 1`] = `
+<WithStyles(ForwardRef(Grid))
+  alignItems="center"
+  container={true}
+  justify="space-around"
+  style={
+    Object {
+      "background": "#c6feff",
+      "marginTop": "-3rem",
+      "minHeight": "100vh",
+      "padding": "2rem",
+    }
+  }
+>
+  <WithStyles(ForwardRef(Grid))
+    item={true}
+    sm={true}
+  >
+    <WithStyles(ForwardRef(Typography))
+      color="primary"
+      variant="h3"
+    >
+      Welcome to the, PARTY
+    </WithStyles(ForwardRef(Typography))>
+  </WithStyles(ForwardRef(Grid))>
+  <WithStyles(ForwardRef(Grid))
+    item={true}
+    sm={true}
+  >
+    <img
+      alt="landing"
+      src="landing-1.svg"
+      style={
+        Object {
+          "height": "100%",
+          "width": "100%",
+        }
+      }
+    />
+  </WithStyles(ForwardRef(Grid))>
+</WithStyles(ForwardRef(Grid))>
+`;

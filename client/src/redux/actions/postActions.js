@@ -4,7 +4,7 @@ import {
   DELETE_POST,
   EDIT_POST,
   UPDATE_COMMENT,
-  UPDATE_LIKE
+  UPDATE_LIKE,
 } from "./types";
 import { setAlert } from "./alertActions";
 import axios from "axios";
@@ -13,8 +13,8 @@ let token = localStorage.getItem("token");
 const config = {
   headers: {
     "Content-Type": "application/json",
-    Authorization: token
-  }
+    Authorization: token,
+  },
 };
 
 export const createPost = data => async dispatch => {
@@ -23,14 +23,14 @@ export const createPost = data => async dispatch => {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: token
-    }
+      Authorization: token,
+    },
   };
   try {
     let res = await axios.post("/api/v1/post/create", body, config);
-    dispatch({
+    return dispatch({
       type: CREATE_POST,
-      payload: res.data
+      payload: res.data,
     });
     return "success";
   } catch (err) {
@@ -42,14 +42,14 @@ export const getPosts = (skip, limit, previousState = []) => async dispatch => {
   const body = JSON.stringify({ skip, limit });
   try {
     let res = await axios.post("/api/v1/post/posts", body, config);
+
     let newState = [...previousState, ...res.data.posts];
     dispatch({
       type: GET_POSTS,
-      payload: newState
+      payload: newState,
     });
-    return res.data.size;
   } catch (err) {
-    // dispatch(setAlert(err.response.data.error, "error", "4"));
+    // dispatch(setAlert(err.response.data.message, "error", "4"));
   }
 };
 
@@ -58,15 +58,15 @@ export const deletePost = postId => async dispatch => {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: token
-    }
+      Authorization: token,
+    },
   };
   try {
     let res = await axios.delete(`/api/v1/post/${postId}`, config);
     dispatch(setAlert(res.data.message, "success", "4"));
     dispatch({
       type: DELETE_POST,
-      payload: postId
+      payload: postId,
     });
   } catch (err) {
     dispatch(setAlert(err.response.data.error, "error", "4"));
@@ -80,8 +80,8 @@ export const editPost = (data, postId) => async dispatch => {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: token
-    }
+      Authorization: token,
+    },
   };
   const body = JSON.stringify(data);
   try {
@@ -89,7 +89,7 @@ export const editPost = (data, postId) => async dispatch => {
     dispatch(setAlert(res.data.message, "success", "4"));
     dispatch({
       type: EDIT_POST,
-      payload: { postId, data }
+      payload: { postId, data },
     });
     return "success";
   } catch (err) {
@@ -103,8 +103,8 @@ export const addComment = (comment, postId) => async dispatch => {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: token
-    }
+      Authorization: token,
+    },
   };
   try {
     let res = await axios.put(
@@ -115,7 +115,7 @@ export const addComment = (comment, postId) => async dispatch => {
 
     dispatch({
       type: UPDATE_COMMENT,
-      payload: res.data
+      payload: res.data,
     });
   } catch (err) {
     dispatch(setAlert(err.response.data.error, "error", "4"));
@@ -127,8 +127,8 @@ export const deleteComment = (postId, commentId) => async dispatch => {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: token
-    }
+      Authorization: token,
+    },
   };
   try {
     let res = await axios.delete(
@@ -137,7 +137,7 @@ export const deleteComment = (postId, commentId) => async dispatch => {
     );
     dispatch({
       type: UPDATE_COMMENT,
-      payload: res.data
+      payload: res.data,
     });
   } catch (err) {
     dispatch(setAlert(err.response.data.error, "error", "4"));
@@ -150,14 +150,14 @@ export const addLike = postId => async dispatch => {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: token
-    }
+      Authorization: token,
+    },
   };
   try {
     let res = await axios.put(`/api/v1/post/addLike/${postId}`, body, config);
     dispatch({
       type: UPDATE_LIKE,
-      payload: res.data
+      payload: res.data,
     });
   } catch (err) {
     dispatch(setAlert(err.response.data.error, "error", "4"));
@@ -170,8 +170,8 @@ export const removeLike = postId => async dispatch => {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: token
-    }
+      Authorization: token,
+    },
   };
   try {
     let res = await axios.put(
@@ -181,7 +181,7 @@ export const removeLike = postId => async dispatch => {
     );
     dispatch({
       type: UPDATE_LIKE,
-      payload: res.data
+      payload: res.data,
     });
   } catch (err) {
     dispatch(setAlert(err.response.data.error, "error", "4"));
