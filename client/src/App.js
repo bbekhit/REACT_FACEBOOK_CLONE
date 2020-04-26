@@ -22,6 +22,7 @@ import AddProfile from "./components/Profile/AddProfile";
 import Profiles from "./components/Profile/Profiles";
 import ToFollow from "./components/Profile/ToFollow";
 import Comments from "./components/Post/Comments";
+import SlugItem from "./components/Post/SlugItem";
 
 const Main = withRouter(({ location }) => {
   const [value, setValue] = useState(0);
@@ -65,6 +66,7 @@ const Main = withRouter(({ location }) => {
             <Route exact path="/profiles" component={Profiles} />
             <Route exact path="/toFollow" component={ToFollow} />
             <Route exact path="/toFollow" component={ToFollow} />
+            <Route exact path="/post/:slug" component={SlugItem} />
             <Route exact path="/post/:id" component={Comments} />
           </Switch>
         </div>

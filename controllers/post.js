@@ -6,7 +6,7 @@ exports.postById = (req, res, next, id) => {
     .exec((err, post) => {
       if (err || !post) {
         return res.status(400).json({
-          error: err
+          error: err,
         });
       }
       req.post = post;
@@ -18,7 +18,7 @@ exports.createPost = async (req, res) => {
   try {
     const newPost = new Post({
       ...req.body,
-      user: req.user._id
+      user: req.user._id,
     });
     await newPost.save();
     res.status(200).json(newPost);
@@ -31,9 +31,7 @@ exports.getPosts = async (req, res) => {
   let limit = req.body.limit ? parseInt(req.body.limit) : 100;
   let skip = parseInt(req.body.skip);
   try {
-    const posts = await Post.find()
-      .limit(limit)
-      .skip(skip);
+    const posts = await Post.find().limit(limit).skip(skip);
     res.status(200).json({ posts, size: posts.length });
   } catch (error) {
     res.status(422).json({ error: "Can't fetch posts, try again later" });
@@ -64,7 +62,7 @@ exports.editPost = async (req, res) => {
 exports.addComment = async (req, res) => {
   const comment = {
     body: req.body.comment,
-    user: req.user._id
+    user: req.user._id,
   };
   try {
     let post = await Post.findByIdAndUpdate(

@@ -17,14 +17,14 @@ import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import Button from "@material-ui/core/Button";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    backgroundColor: theme.palette.common.whiteColor
+    backgroundColor: theme.palette.common.whiteColor,
   },
   inline: {
     display: "inline",
-    marginRight: "1rem"
+    marginRight: "1rem",
   },
   list: {
     ...theme.customBorder,
@@ -37,15 +37,15 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       cursor: "pointer",
       "& $btnContainer": {
-        opacity: 1
-      }
-    }
+        opacity: 1,
+      },
+    },
   },
   btnContainer: {
     [theme.breakpoints.down("sm")]: {
-      opacity: 1
+      opacity: 1,
     },
-    opacity: 0
+    opacity: 0,
   },
   followBtn: {
     fontSize: ".5rem",
@@ -53,8 +53,8 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.common.mainBlue,
     borderStyle: "solid",
     borderWidth: "1px",
-    borderColor: theme.palette.common.mainBlue
-  }
+    borderColor: theme.palette.common.mainBlue,
+  },
 }));
 
 const PostList = ({
@@ -63,7 +63,7 @@ const PostList = ({
   addLike,
   removeLike,
   openModal,
-  auth: { user }
+  auth: { user },
 }) => {
   const [limit, setLimit] = useState(5);
   const [skip, setSkip] = useState(0);
@@ -92,29 +92,31 @@ const PostList = ({
               className={classes.list}
               key={`${item.name}-${i}`}
             >
-              <Grid item>
-                <ListItem alignItems="flex-start" sm={8}>
-                  <ListItemAvatar>
-                    <Avatar alt={item.postedBy} src="" />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={item.title}
-                    secondary={
-                      <React.Fragment>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          className={classes.inline}
-                          color="textPrimary"
-                        >
-                          {item.postedBy}
-                        </Typography>
-                        {item.body}
-                      </React.Fragment>
-                    }
-                  />
-                </ListItem>
-              </Grid>
+              <Link to={`post/${item.slug}`}>
+                <Grid item>
+                  <ListItem alignItems="flex-start" sm={8}>
+                    <ListItemAvatar>
+                      <Avatar alt={item.postedBy} src="" />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={item.title}
+                      secondary={
+                        <React.Fragment>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            className={classes.inline}
+                            color="textPrimary"
+                          >
+                            {item.postedBy}
+                          </Typography>
+                          {item.body}
+                        </React.Fragment>
+                      }
+                    />
+                  </ListItem>
+                </Grid>
+              </Link>
               <Grid
                 container
                 justify="space-around"
@@ -151,7 +153,7 @@ const PostList = ({
                           onClick={() =>
                             openModal("ConfirmModal", {
                               isOpen: true,
-                              postId: item._id
+                              postId: item._id,
                             })
                           }
                         >
@@ -176,7 +178,7 @@ const PostList = ({
                     style={{
                       marginLeft: "3px",
                       position: "relative",
-                      bottom: "5px"
+                      bottom: "5px",
                     }}
                   >
                     {item.likes.length !== 0 ? item.likes.length : null}
@@ -200,13 +202,13 @@ const PostList = ({
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   posts: state.post,
-  auth: state.auth
+  auth: state.auth,
 });
 export default connect(mapStateToProps, {
   getPosts,
   openModal,
   addLike,
-  removeLike
+  removeLike,
 })(PostList);
