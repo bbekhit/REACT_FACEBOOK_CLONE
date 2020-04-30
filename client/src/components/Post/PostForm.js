@@ -12,41 +12,41 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       background: theme.palette.common.whiteColor,
       color: theme.palette.common.mainBlue,
-      border: "1px solid #4f34ff"
-    }
-  }
+      border: "1px solid #4f34ff",
+    },
+  },
 }));
 
 const CssTextField = withStyles(theme => ({
   root: {
     "& label.Mui-focused": {
-      color: theme.palette.common.mainBlue
+      color: theme.palette.common.mainBlue,
     },
     "& .MuiInput-underline:after": {
-      borderBottomColor: theme.palette.common.mainBlue
+      borderBottomColor: theme.palette.common.mainBlue,
     },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
-        borderColor: theme.palette.common.mainBlue
+        borderColor: theme.palette.common.mainBlue,
       },
       "&:hover fieldset": {
-        borderColor: theme.palette.common.mainBlue
+        borderColor: theme.palette.common.mainBlue,
       },
       "&.Mui-focused fieldset": {
-        borderColor: theme.palette.common.mainBlue
-      }
-    }
-  }
+        borderColor: theme.palette.common.mainBlue,
+      },
+    },
+  },
 }))(TextField);
 
-const PostForm = ({ onSubmit, auth, post }) => {
+export const PostForm = ({ onSubmit, auth, post }) => {
   const [values, setValues] = useState({
     title: post ? post.title : "",
-    body: post ? post.body : ""
+    body: post ? post.body : "",
   });
   const [errors, setErrors] = useState({
     titleError: "",
-    bodyError: ""
+    bodyError: "",
   });
   const { title, body } = values;
   const { titleError, bodyError } = errors;
@@ -71,7 +71,7 @@ const PostForm = ({ onSubmit, auth, post }) => {
         if (valid) {
           setErrors({
             ...errors,
-            bodyError: "Post is required"
+            bodyError: "Post is required",
           });
         } else {
           setErrors({ ...errors, bodyError: "" });
@@ -86,7 +86,7 @@ const PostForm = ({ onSubmit, auth, post }) => {
     e.preventDefault();
     const postData = {
       ...values,
-      postedBy: auth.user.name
+      postedBy: auth.user.name,
     };
     onSubmit(postData);
   };
@@ -111,16 +111,19 @@ const PostForm = ({ onSubmit, auth, post }) => {
               id="title"
               fullWidth
               InputProps={{
-                className: classes.inputColor
+                className: classes.inputColor,
               }}
               InputLabelProps={{
                 style: {
-                  color: theme.palette.common.mainBlue
-                }
+                  color: theme.palette.common.mainBlue,
+                },
               }}
               onChange={onChange}
               value={title}
               // inputProps={{ style: { fontFamily: 'nunito', color: 'white'}}}
+              inputProps={{
+                id: "titleInput",
+              }}
             />
           </Grid>
           <Grid item>
@@ -135,12 +138,12 @@ const PostForm = ({ onSubmit, auth, post }) => {
               multiline
               rows={10}
               InputProps={{
-                className: classes.inputColor
+                className: classes.inputColor,
               }}
               InputLabelProps={{
                 style: {
-                  color: theme.palette.common.mainBlue
-                }
+                  color: theme.palette.common.mainBlue,
+                },
               }}
               onChange={onChange}
               value={body}
@@ -152,6 +155,7 @@ const PostForm = ({ onSubmit, auth, post }) => {
               className={classes.btn}
               onClick={onSubmitForm}
               disabled={!!titleError || !title || !!bodyError || !body}
+              id="btn"
             >
               Submit
             </Button>
@@ -163,6 +167,6 @@ const PostForm = ({ onSubmit, auth, post }) => {
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
 });
 export default connect(mapStateToProps)(PostForm);

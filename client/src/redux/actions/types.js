@@ -9,6 +9,7 @@ export const GET_POSTS = "GET_POSTS";
 export const DELETE_POST = "DELETE_POST";
 export const EDIT_POST = "EDIT_POST";
 export const UPDATE_COMMENT = "UPDATE_COMMENT";
+export const ADD_COMMENT = "ADD_COMMENT";
 export const UPDATE_LIKE = "UPDATE_LIKE";
 export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
