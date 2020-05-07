@@ -14,11 +14,11 @@ mongoose
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   })
   .then(() => console.log("DB Connected"));
 
-mongoose.connection.on("error", err => {
+mongoose.connection.on("error", (err) => {
   console.log(`DB connection error: ${err.message}`);
 });
 
@@ -43,6 +43,6 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`app running on port ${PORT}`));
