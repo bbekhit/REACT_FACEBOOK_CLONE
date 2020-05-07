@@ -22,6 +22,7 @@ import AddProfile from "./components/Profile/AddProfile";
 import Profiles from "./components/Profile/Profiles";
 import ToFollow from "./components/Profile/ToFollow";
 import Comments from "./components/Post/Comments";
+import PostListDND from "./components/Post/PostListDND";
 
 const Main = withRouter(({ location }) => {
   const [value, setValue] = useState(0);
@@ -60,6 +61,7 @@ const Main = withRouter(({ location }) => {
             <Route exact path="/create-post" component={AddPost} />
             <Route exact path="/edit/:id" component={EditPost} />
             <Route exact path="/posts" component={PostList} />
+            <Route exact path="/dnd" component={PostListDND} />
             <Route exact path="/me" component={Profile} />
             <Route exact path="/create-profile" component={AddProfile} />
             <Route exact path="/profiles" component={Profiles} />
