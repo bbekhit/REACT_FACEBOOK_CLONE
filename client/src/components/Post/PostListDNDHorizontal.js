@@ -6,28 +6,14 @@ import uuid from "uuid/v4";
 import Spinner from "../Spinner/Spinner";
 
 const PostListDND = ({ posts, getPosts }) => {
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(4);
   const [skip, setSkip] = useState(0);
-
-  // one-way
-  // const [homeIndex, setHomeIndex] = useState(null);
+  const [homeIndex, setHomeIndex] = useState(null);
 
   const columnsFromBackend = {
     "column-1": {
       name: "Requested",
       items: posts,
-    },
-    "column-2": {
-      name: "To do",
-      items: [],
-    },
-    "column-3": {
-      name: "In Progress",
-      items: [],
-    },
-    "column-4": {
-      name: "Done",
-      items: [],
     },
   };
   // one-way
@@ -127,9 +113,8 @@ const PostListDND = ({ posts, getPosts }) => {
               <div style={{ margin: 8, border: "1px dashed green" }}>
                 <Droppable
                   droppableId={columnId}
-
-                  // one-way
-                  // isDropDisabled={index < homeIndex}
+                  isDropDisabled={index < homeIndex}
+                  direction="horizontal"
                 >
                   {(provided, snapshot) => {
                     return (
@@ -141,9 +126,9 @@ const PostListDND = ({ posts, getPosts }) => {
                             ? "lightblue"
                             : "lightgrey",
                           padding: 4,
-                          width: 250,
-                          minHeight: 500,
                           border: "1px dashed orange",
+                          display: "flex",
+                          justifyContent: "space-between",
                         }}
                       >
                         {column.items.map((item, index) => {
@@ -162,18 +147,23 @@ const PostListDND = ({ posts, getPosts }) => {
                                     style={{
                                       userSelect: "none",
                                       padding: 16,
-                                      margin: "0 0 8px 0",
-                                      minHeight: "50px",
+                                      margin: "0 8px 0 0",
                                       backgroundColor: snapshot.isDragging
                                         ? "#263B4A"
                                         : "#456C86",
                                       color: "white",
                                       border: "1px dashed purple",
+                                      borderRadius: "50%",
+                                      width: "40px",
+                                      height: "40px",
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
                                       ...provided.draggableProps.style,
                                     }}
                                   >
                                     {/* {item.content} */}
-                                    {item.title}
+                                    {item.title.split("")[0]}
                                   </div>
                                 );
                               }}
@@ -202,4 +192,3 @@ export default connect(mapStateToProps, {
   getPosts,
 })(PostListDND);
 // https://www.youtube.com/watch?v=uHO3mQgs-e8
-// https://www.youtube.com/watch?v=lP9_D9_DlQk&list=PLBguFN_KEgLimbYj8UgDmjKjLYalq63FQ&index=12

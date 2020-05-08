@@ -23,6 +23,9 @@ import Profiles from "./components/Profile/Profiles";
 import ToFollow from "./components/Profile/ToFollow";
 import Comments from "./components/Post/Comments";
 import PostListDND from "./components/Post/PostListDND";
+import PostListDNDHorizontal from "./components/Post/PostListDNDHorizontal";
+import DND from "./components/Post/DND/DND";
+import DNDall from "./components/Post/DND/DNDall/DNDall";
 
 const Main = withRouter(({ location }) => {
   const [value, setValue] = useState(0);
@@ -61,7 +64,13 @@ const Main = withRouter(({ location }) => {
             <Route exact path="/create-post" component={AddPost} />
             <Route exact path="/edit/:id" component={EditPost} />
             <Route exact path="/posts" component={PostList} />
+            {/* //// */}
             <Route exact path="/dnd" component={PostListDND} />
+            <Route exact path="/dndh" component={PostListDNDHorizontal} />
+            <Route exact path="/dndComponent" component={DND} />
+            {/* <Route exact path="/dndall" component={DNDall} /> */}
+
+            {/* /// */}
             <Route exact path="/me" component={Profile} />
             <Route exact path="/create-profile" component={AddProfile} />
             <Route exact path="/profiles" component={Profiles} />
